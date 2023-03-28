@@ -7,31 +7,27 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@NoArgsConstructor
-@AllArgsConstructor
-@Setter
 @Getter
-public class Integration {
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+public class Version {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotNull
+    private Integer percentOfSpendBudget;
+
+    @NotNull
     private String name;
 
-    private String photo;
-    @NotNull
-    private Integer budget;
-    @NotNull
-    private Integer noOfMembers;
-
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "integration_id")
-    private List<Version> versionList = new ArrayList<>();
-
+    @JoinColumn(name = "version_id")
+    private List<Category> categoryList = new ArrayList<>();
 }

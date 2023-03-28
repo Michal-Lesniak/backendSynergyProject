@@ -1,11 +1,34 @@
 package com.example.backendsynergyproject.models;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
-@Table(name = "categories")
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
 public class Category {
     @Id
-    private Integer id;
-    private String subcategories;
+    private Long id;
+
+    @NotNull
+    private String name;
+
+    @NotNull
+    private Integer fullCost;
+
+    @NotNull
+    private Integer spendPercentOfBudgetCategory;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "category_id")
+    private List<SubCategory> subCategoryList = new ArrayList<>();
 }
