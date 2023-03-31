@@ -34,6 +34,7 @@ public class Version {
     @JoinColumn(name = "integration_id",nullable = false)
     private Integration integration;
 
+    @JsonIgnoreProperties("version")
     @OneToMany(mappedBy = "version" ,cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Category> categoryList = new ArrayList<>();
 

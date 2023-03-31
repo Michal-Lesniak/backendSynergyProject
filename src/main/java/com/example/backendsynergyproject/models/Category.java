@@ -1,5 +1,6 @@
 package com.example.backendsynergyproject.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -17,6 +18,7 @@ import java.util.List;
 @Setter
 public class Category {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotNull
@@ -28,10 +30,12 @@ public class Category {
     @NotNull
     private Integer spendPercentOfBudgetCategory;
 
+    @JsonIgnoreProperties("versionList")
     @ManyToOne
     @JoinColumn(name = "version_id")
     private Version version;
 
+    @JsonIgnoreProperties("category")
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<SubCategory> subCategoryList = new ArrayList<>();
 

@@ -1,5 +1,6 @@
 package com.example.backendsynergyproject.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -23,6 +24,7 @@ public class SubCategory {
     @NotNull
     private Integer cost;
 
+    @JsonIgnoreProperties("subCategoryList")
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;

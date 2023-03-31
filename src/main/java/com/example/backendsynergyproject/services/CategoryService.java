@@ -67,7 +67,7 @@ public class CategoryService {
     }
 
     @Transactional
-    public Category update(Category categoryBody, long id) throws Exception {
+    public Category update(Category categoryBody, Long id) throws Exception {
         Category updatedCategory = categoryRepository.findById(id).orElseThrow(() -> new Exception("Category Not Found"));
         updatedCategory.setName(categoryBody.getName());
         updatedCategory.setFullCost(categoryBody.getFullCost());

@@ -32,7 +32,7 @@ public class SubCategoryController {
     }
 
 
-    @DeleteMapping("/id")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Boolean> deleteCategory(@PathVariable Long id){
         try {
             return ResponseEntity.ok().body(subCategoryService.delete(id));
@@ -41,8 +41,8 @@ public class SubCategoryController {
         }
     }
 
-    @PutMapping("/id")
-    public ResponseEntity<SubCategory> updateCategory(@PathVariable Long id, @RequestBody SubCategory subCategoryBody){
+    @PutMapping("/{id}")
+    public ResponseEntity<SubCategory> updateSubCategory(@PathVariable Long id, @RequestBody SubCategory subCategoryBody){
         try {
             return ResponseEntity.ok().body(subCategoryService.update(subCategoryBody, id));
         }catch (Exception e){
