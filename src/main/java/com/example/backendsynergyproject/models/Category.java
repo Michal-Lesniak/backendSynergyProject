@@ -28,7 +28,15 @@ public class Category {
     @NotNull
     private Integer spendPercentOfBudgetCategory;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "category_id")
+    @ManyToOne
+    @JoinColumn(name = "version_id")
+    private Version version;
+
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<SubCategory> subCategoryList = new ArrayList<>();
+
+    public void addSubCategory(SubCategory subCategory){
+        subCategoryList.add(subCategory);
+        subCategory.setCategory(this);
+    }
 }

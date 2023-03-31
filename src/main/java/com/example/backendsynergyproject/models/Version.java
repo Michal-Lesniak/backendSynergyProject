@@ -1,5 +1,7 @@
 package com.example.backendsynergyproject.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -27,7 +29,16 @@ public class Version {
     @NotNull
     private String name;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "version_id")
+    @JsonIgnoreProperties("versionList")
+    @ManyToOne
+    @JoinColumn(name = "integration_id",nullable = false)
+    private Integration integration;
+
+    @OneToMany(mappedBy = "version" ,cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Category> categoryList = new ArrayList<>();
+
+    public void addCategory(Category category){
+        categoryList.add(category);
+        category.setVersion(this);
+    }
 }

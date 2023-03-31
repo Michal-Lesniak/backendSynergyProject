@@ -2,6 +2,7 @@ package com.example.backendsynergyproject.services;
 
 import com.example.backendsynergyproject.dto.IntegrationDto;
 import com.example.backendsynergyproject.models.Integration;
+import com.example.backendsynergyproject.models.Version;
 import com.example.backendsynergyproject.repositories.IntegrationRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +32,7 @@ public class IntegrationService {
     }
 
     @Transactional
-    public boolean deleteIntegration(Long id){
+    public boolean delete(Long id){
         if(integrationRepository.existsById(id)) {
             integrationRepository.deleteById(id);
             return true;
@@ -41,7 +42,7 @@ public class IntegrationService {
     }
 
     @Transactional
-    public Integration addIntegration(Integration integrationBody) throws Exception {
+    public Integration add(Integration integrationBody) throws Exception {
         if(integrationRepository.existsByName(integrationBody.getName())){
             throw new Exception("Integracja Istnieje");
         }
@@ -50,15 +51,19 @@ public class IntegrationService {
         }
     }
 
+
     @Transactional
-    public Integration changeIntegration(Integration integrationBody,Long id) throws Exception{
+    public Integration update(Integration integrationBody,Long id) throws Exception{
        Optional<Integration> existingIntegration = integrationRepository.findById(id);
        if(existingIntegration.isEmpty()){
            throw new Exception("W bazie nie ma takiej Integracji!");
         }
        else{
            Integration integration = existingIntegration.get();
-           integration.setVersionList(integrationBody.getVersionList());
+           List<Version> versionList =  integration.getVersionList();
+           versionList.clear();
+           integrationBody.getVersionList().forEach((version -> {versionList.add(version);}));
+           integration.setVersionList(versionList);
            integration.setName(integrationBody.getName());
            integration.setBudget(integrationBody.getBudget());
            integration.setPhoto(integrationBody.getPhoto());
@@ -67,21 +72,22 @@ public class IntegrationService {
        }
     }
 
-    public Integration mapToIntegration(IntegrationDto integrationDto){
-        Integration integration = new Integration();
-        integration.setName(integrationDto.name());
-        integration.setPhoto(integrationDto.photo());
-        integration.setBudget(integrationDto.budget());
-        integration.setNoOfMembers(integrationDto.noOfMembers());
-        integration.setVersionList(integrationDto.versionList());
-        return integration;
-    }
 
-    public IntegrationDto mapToDto(Integration integration){
-        return new IntegrationDto(integration.getName(),
-                integration.getPhoto(),
-                integration.getBudget(),
-                integration.getNoOfMembers(),
-                integration.getVersionList());
-    }
+//    public Integration mapToIntegration(IntegrationDto integrationDto){
+//        Integration integration = new Integration();
+//        integration.setName(integrationDto.name());
+//        integration.setPhoto(integrationDto.photo());
+//        integration.setBudget(integrationDto.budget());
+//        integration.setNoOfMembers(integrationDto.noOfMembers());
+//        integration.setVersionList(integrationDto.versionList());
+//        return integration;
+//    }
+//
+//    public IntegrationDto mapToDto(Integration integration){
+//        return new IntegrationDto(integration.getName(),
+//                integration.getPhoto(),
+//                integration.getBudget(),
+//                integration.getNoOfMembers(),
+//                integration.getVersionList());
+//    }
 }

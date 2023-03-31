@@ -22,4 +22,8 @@ public class SubCategory {
 
     @NotNull
     private Integer cost;
+
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
 }

@@ -3,7 +3,10 @@ package com.example.backendsynergyproject.controllers;
 
 import com.example.backendsynergyproject.dto.IntegrationDto;
 import com.example.backendsynergyproject.models.Integration;
+import com.example.backendsynergyproject.models.Version;
 import com.example.backendsynergyproject.services.IntegrationService;
+import com.example.backendsynergyproject.services.VersionService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,38 +14,59 @@ import java.util.List;
 
 @RestController
 @CrossOrigin
-@RequestMapping("integrations")
+@RequestMapping("integration")
 public class IntegrationController {
 
-    private final IntegrationService integrationService;
+    @Autowired
+    IntegrationService integrationService;
+    @Autowired
+    VersionService versionService;
 
-    public IntegrationController(IntegrationService integrationService) {
-        this.integrationService = integrationService;
-    }
 
     @GetMapping
-    public ResponseEntity<List<Integration>> GetIntegrations() {
+    public ResponseEntity<List<Integration>> getIntegrations() {
         return ResponseEntity.ok().body(integrationService.findAll());
     }
     
     @GetMapping("/{id}")
-    public ResponseEntity<Integration> GetOneIntegretioan(@PathVariable Long id){
+    public ResponseEntity<Integration> getOneIntegration(@PathVariable Long id){
         return ResponseEntity.ok().body(integrationService.findOne(id));
     }
 
-    @PostMapping
-    public ResponseEntity<Integration> AddIntegration(@RequestBody Integration integrationBody) {
+    @GetMapping("/{integration_id}/version")
+    public ResponseEntity<List<Version>> getAllVersionsFromIntegration(@PathVariable Long integration_id){
         try {
-            Integration integration = integrationService.addIntegration(integrationBody);
+            List<Version> versionList = versionService.findAllFromIntegration(integration_id);
+            return ResponseEntity.ok().body(versionList);
+        }catch (Exception e){
+            return ResponseEntity.badRequest().build();
+        }
+
+    }
+
+    @PostMapping
+    public ResponseEntity<Integration> addIntegration(@RequestBody Integration integrationBody) {
+        try {
+            Integration integration = integrationService.add(integrationBody);
             return ResponseEntity.ok().body(integration);
         } catch (Exception e) {
             return ResponseEntity.badRequest().build();
         }
     }
 
+    @PostMapping("/{id}/version")
+    public ResponseEntity<Integration> addVersion(@PathVariable Long id, @RequestBody Version version) {
+        try {
+            Integration updatedIntegration =  versionService.add(version, id);
+            return ResponseEntity.ok().body(updatedIntegration);
+        }catch (Exception e){
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Boolean> deleteIntegration(@PathVariable Long id) {
-        if (integrationService.deleteIntegration(id)) {
+        if (integrationService.delete(id)) {
             return ResponseEntity.ok().body(true);
         } else {
             return ResponseEntity.badRequest().build();
@@ -52,7 +76,7 @@ public class IntegrationController {
     @PutMapping("/{id}")
     public ResponseEntity<Integration> updateIntegration(@PathVariable Long id, @RequestBody Integration updatedintegration){
         try {
-            Integration changedintegration = integrationService.changeIntegration(updatedintegration, id);
+            Integration changedintegration = integrationService.update(updatedintegration, id);
             return ResponseEntity.ok().body(changedintegration);
         }catch (Exception e){
             return ResponseEntity.badRequest().build();
@@ -60,6 +84,4 @@ public class IntegrationController {
     }
 
 
-//    ToDo:
-//      GetMapping - get One Integration
 }

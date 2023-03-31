@@ -1,5 +1,7 @@
 package com.example.backendsynergyproject.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -30,8 +32,12 @@ public class Integration {
     @NotNull
     private Integer noOfMembers;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "integration_id")
+    @JsonIgnoreProperties("integration")
+    @OneToMany(mappedBy = "integration", cascade = CascadeType.ALL, orphanRemoval = true )
     private List<Version> versionList = new ArrayList<>();
 
+    public void addVersion(Version version) {
+        versionList.add(version);
+        version.setIntegration(this);
+    }
 }
