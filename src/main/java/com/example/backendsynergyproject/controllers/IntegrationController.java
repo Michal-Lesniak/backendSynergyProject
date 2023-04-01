@@ -2,6 +2,7 @@ package com.example.backendsynergyproject.controllers;
 
 
 import com.example.backendsynergyproject.dto.IntegrationDto;
+import com.example.backendsynergyproject.dto.VersionDto;
 import com.example.backendsynergyproject.models.Integration;
 import com.example.backendsynergyproject.models.Version;
 import com.example.backendsynergyproject.services.IntegrationService;
@@ -45,9 +46,9 @@ public class IntegrationController {
     }
 
     @PostMapping
-    public ResponseEntity<Integration> addIntegration(@RequestBody Integration integrationBody) {
+    public ResponseEntity<Integration> addIntegration(@RequestBody IntegrationDto integrationDtoBody) {
         try {
-            Integration integration = integrationService.add(integrationBody);
+            Integration integration = integrationService.add(integrationDtoBody);
             return ResponseEntity.ok().body(integration);
         } catch (Exception e) {
             return ResponseEntity.badRequest().build();
@@ -55,9 +56,9 @@ public class IntegrationController {
     }
 
     @PostMapping("/{id}/version")
-    public ResponseEntity<Integration> addVersion(@PathVariable Long id, @RequestBody Version version) {
+    public ResponseEntity<Integration> addVersion(@PathVariable Long id, @RequestBody VersionDto versionDto) {
         try {
-            Integration updatedIntegration =  versionService.add(version, id);
+            Integration updatedIntegration =  versionService.add(versionDto, id);
             return ResponseEntity.ok().body(updatedIntegration);
         }catch (Exception e){
             return ResponseEntity.badRequest().build();
@@ -74,9 +75,9 @@ public class IntegrationController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Integration> updateIntegration(@PathVariable Long id, @RequestBody Integration updatedintegration){
+    public ResponseEntity<Integration> updateIntegration(@PathVariable Long id, @RequestBody IntegrationDto updatedintegrationDto){
         try {
-            Integration changedintegration = integrationService.update(updatedintegration, id);
+            Integration changedintegration = integrationService.update(updatedintegrationDto, id);
             return ResponseEntity.ok().body(changedintegration);
         }catch (Exception e){
             return ResponseEntity.badRequest().build();

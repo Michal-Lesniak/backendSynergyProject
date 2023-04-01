@@ -30,17 +30,12 @@ public class Category {
     @NotNull
     private Integer spendPercentOfBudgetCategory;
 
-    @JsonIgnoreProperties("versionList")
-    @ManyToOne
-    @JoinColumn(name = "version_id")
-    private Version version;
 
-    @JsonIgnoreProperties("category")
-    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "category_id")
     private List<SubCategory> subCategoryList = new ArrayList<>();
 
     public void addSubCategory(SubCategory subCategory){
         subCategoryList.add(subCategory);
-        subCategory.setCategory(this);
     }
 }

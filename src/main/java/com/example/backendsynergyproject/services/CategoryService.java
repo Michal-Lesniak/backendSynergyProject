@@ -1,5 +1,6 @@
 package com.example.backendsynergyproject.services;
 
+import com.example.backendsynergyproject.dto.CategoryDto;
 import com.example.backendsynergyproject.models.Category;
 import com.example.backendsynergyproject.models.Integration;
 import com.example.backendsynergyproject.models.Version;
@@ -26,7 +27,7 @@ public class CategoryService {
 
     public List<Category> findAllFromVersion(Long version_id) throws Exception {
         if (versionRepository.existsById(version_id)) {
-            return categoryRepository.findAllByVersion_Id(version_id);
+            return versionRepository.findById(version_id).get().getCategoryList();
         } else {
             throw new Exception("Version Not Found");
         }
@@ -36,25 +37,14 @@ public class CategoryService {
         return categoryRepository.findById(id).orElseThrow(() -> new Exception("Category Not Found"));
     }
 
-//    @Transactional
-//    public Version add(Category categoryBody, Long version_id) throws Exception {
-//        Version version = versionRepository.findById(version_id).orElseThrow(() -> new Exception("Version Not Found"));
-//        version.addCategory(categoryBody);
-//        return versionRepository.save(version);
-//    }
-
     @Transactional
-    public Version add(Category categoryBody, Long version_id) throws Exception{
-        Optional<Version> version = versionRepository.findById(version_id);
-        if(version.isEmpty()){
-            throw new Exception("Version Not Found");
-        }else {
-            Version versionToUpdate = version.get();
-            versionToUpdate.addCategory(categoryBody);
-            return versionRepository.save(versionToUpdate);
-        }
-
+    public Version add(CategoryDto categoryDtoBody, Long version_id) throws Exception {
+        Version version = versionRepository.findById(version_id).orElseThrow(() -> new Exception("Version Not Found"));
+        version.addCategory(mapToCategory(categoryDtoBody));
+        return versionRepository.save(version);
     }
+
+
 
     @Transactional
     public Boolean delete(Long id) {
@@ -67,13 +57,25 @@ public class CategoryService {
     }
 
     @Transactional
-    public Category update(Category categoryBody, Long id) throws Exception {
+    public Category update(CategoryDto categoryDtoBody, Long id) throws Exception {
         Category updatedCategory = categoryRepository.findById(id).orElseThrow(() -> new Exception("Category Not Found"));
-        updatedCategory.setName(categoryBody.getName());
-        updatedCategory.setFullCost(categoryBody.getFullCost());
-        updatedCategory.setSpendPercentOfBudgetCategory(categoryBody.getFullCost());
+        updatedCategory.setName(categoryDtoBody.name());
+        updatedCategory.setFullCost(categoryDtoBody.fullCost());
+        updatedCategory.setSpendPercentOfBudgetCategory(categoryDtoBody.spendPercentOfBudgetCategory());
         return categoryRepository.save(updatedCategory);
 
+    }
+
+    public CategoryDto mapToDto(Category category){
+        return new CategoryDto(category.getName(), category.getFullCost(), category.getSpendPercentOfBudgetCategory());
+    }
+
+    public Category mapToCategory(CategoryDto categoryDto){
+        Category category = new Category();
+        category.setName(categoryDto.name());
+        category.setFullCost(categoryDto.fullCost());
+        category.setSpendPercentOfBudgetCategory(categoryDto.spendPercentOfBudgetCategory());
+        return category;
     }
 
 }

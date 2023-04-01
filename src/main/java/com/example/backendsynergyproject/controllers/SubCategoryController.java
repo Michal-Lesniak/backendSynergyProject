@@ -1,5 +1,6 @@
 package com.example.backendsynergyproject.controllers;
 
+import com.example.backendsynergyproject.dto.SubCategoryDto;
 import com.example.backendsynergyproject.models.Category;
 import com.example.backendsynergyproject.models.SubCategory;
 import com.example.backendsynergyproject.services.SubCategoryService;
@@ -42,9 +43,9 @@ public class SubCategoryController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<SubCategory> updateSubCategory(@PathVariable Long id, @RequestBody SubCategory subCategoryBody){
+    public ResponseEntity<SubCategory> updateSubCategory(@PathVariable Long id, @RequestBody SubCategoryDto subCategoryDtoBody){
         try {
-            return ResponseEntity.ok().body(subCategoryService.update(subCategoryBody, id));
+            return ResponseEntity.ok().body(subCategoryService.update(subCategoryDtoBody, id));
         }catch (Exception e){
             return ResponseEntity.badRequest().build();
         }

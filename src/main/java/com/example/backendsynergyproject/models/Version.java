@@ -29,17 +29,12 @@ public class Version {
     @NotNull
     private String name;
 
-    @JsonIgnoreProperties("versionList")
-    @ManyToOne
-    @JoinColumn(name = "integration_id",nullable = false)
-    private Integration integration;
 
-    @JsonIgnoreProperties("version")
-    @OneToMany(mappedBy = "version" ,cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "version_id")
     private List<Category> categoryList = new ArrayList<>();
 
     public void addCategory(Category category){
         categoryList.add(category);
-        category.setVersion(this);
     }
 }

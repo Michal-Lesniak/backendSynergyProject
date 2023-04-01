@@ -1,5 +1,6 @@
 package com.example.backendsynergyproject.controllers;
 
+import com.example.backendsynergyproject.dto.CategoryDto;
 import com.example.backendsynergyproject.dto.VersionDto;
 import com.example.backendsynergyproject.models.Category;
 import com.example.backendsynergyproject.models.Integration;
@@ -48,9 +49,9 @@ public class VersionController {
     }
 
     @PostMapping("/{id}/category")
-    public ResponseEntity<Version> addCategory(@PathVariable Long id, @RequestBody Category categoryBody) {
+    public ResponseEntity<Version> addCategory(@PathVariable Long id, @RequestBody CategoryDto categoryDtoBody) {
         try {
-            return ResponseEntity.ok().body(categoryService.add(categoryBody, id));
+            return ResponseEntity.ok().body(categoryService.add(categoryDtoBody, id));
         } catch (Exception e) {
             return ResponseEntity.badRequest().build();
         }
@@ -65,9 +66,9 @@ public class VersionController {
 
 
     @PutMapping("/{id}")
-    public ResponseEntity<Version> updateVersion(@PathVariable Long id, @RequestBody Version versionBody) {
+    public ResponseEntity<Version> updateVersion(@PathVariable Long id, @RequestBody VersionDto versionDtoBody) {
         try {
-            return ResponseEntity.ok().body(versionService.update(versionBody, id));
+            return ResponseEntity.ok().body(versionService.update(versionDtoBody, id));
         } catch (Exception e) {
             return ResponseEntity.badRequest().build();
         }

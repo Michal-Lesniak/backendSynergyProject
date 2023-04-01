@@ -1,5 +1,7 @@
 package com.example.backendsynergyproject.services;
 
+import com.example.backendsynergyproject.dto.CategoryDto;
+import com.example.backendsynergyproject.dto.SubCategoryDto;
 import com.example.backendsynergyproject.models.Category;
 import com.example.backendsynergyproject.models.SubCategory;
 import com.example.backendsynergyproject.repositories.CategoryRepository;
@@ -24,7 +26,7 @@ public class SubCategoryService {
     }
 
     public List<SubCategory> getAllFromVersion(Long category_id){
-        return subCategoryRepository.findAllByCategory_Id(category_id);
+        return categoryRepository.findById(category_id).get().getSubCategoryList();
     }
 
     public SubCategory getOne(Long id) throws Exception{
@@ -33,9 +35,9 @@ public class SubCategoryService {
 
 
     @Transactional
-    public Category add(SubCategory subCategoryBody, Long category_id) throws Exception{
+    public Category add(SubCategoryDto subCategoryDtoBody, Long category_id) throws Exception{
         Category category = categoryRepository.findById(category_id).orElseThrow(() -> new Exception("Category Not Found"));
-        category.addSubCategory(subCategoryBody);
+        category.addSubCategory(mapToSubCategory(subCategoryDtoBody));
         return categoryRepository.save(category);
     }
 
@@ -50,11 +52,22 @@ public class SubCategoryService {
     }
 
     @Transactional
-    public SubCategory update(SubCategory subCategoryBody, Long id) throws Exception{
+    public SubCategory update(SubCategoryDto subCategoryDtoBody , Long id) throws Exception{
         SubCategory updatedSubCategory = subCategoryRepository.findById(id).orElseThrow(() -> new Exception("Category Not Found"));
-        updatedSubCategory.setName(subCategoryBody.getName());
-        updatedSubCategory.setCost(subCategoryBody.getCost());
+        updatedSubCategory.setName(subCategoryDtoBody.name());
+        updatedSubCategory.setCost(subCategoryDtoBody.cost());
         return subCategoryRepository.save(updatedSubCategory);
+    }
+
+    public SubCategoryDto mapToDto(SubCategory subCategory){
+        return new SubCategoryDto(subCategory.getName(), subCategory.getCost());
+    }
+
+    public SubCategory mapToSubCategory(SubCategoryDto subCategoryDto){
+        SubCategory subCategory = new SubCategory();
+        subCategory.setName(subCategoryDto.name());
+        subCategory.setCost(subCategoryDto.cost());
+        return subCategory;
     }
 
 }

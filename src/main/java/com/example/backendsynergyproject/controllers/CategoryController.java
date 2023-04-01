@@ -1,5 +1,7 @@
 package com.example.backendsynergyproject.controllers;
 
+import com.example.backendsynergyproject.dto.CategoryDto;
+import com.example.backendsynergyproject.dto.SubCategoryDto;
 import com.example.backendsynergyproject.models.Category;
 import com.example.backendsynergyproject.models.SubCategory;
 import com.example.backendsynergyproject.models.Version;
@@ -46,9 +48,9 @@ public class CategoryController {
     }
 
     @PostMapping("/{id}/subcategory")
-    public ResponseEntity<Category> addSubCategory(@PathVariable Long id, @RequestBody SubCategory subCategoryBody){
+    public ResponseEntity<Category> addSubCategory(@PathVariable Long id, @RequestBody SubCategoryDto subCategoryDtoBody){
         try {
-            return ResponseEntity.ok().body(subCategoryService.add(subCategoryBody, id));
+            return ResponseEntity.ok().body(subCategoryService.add(subCategoryDtoBody, id));
         }catch (Exception e){
             return ResponseEntity.badRequest().build();
         }
@@ -63,9 +65,9 @@ public class CategoryController {
 
 
     @PutMapping("/{id}")
-    public ResponseEntity<Category> updateCategory(@PathVariable Long id, @RequestBody Category categoryBody) {
+    public ResponseEntity<Category> updateCategory(@PathVariable Long id, @RequestBody CategoryDto categoryDtoBody) {
         try {
-            return ResponseEntity.ok().body(categoryService.update(categoryBody, id));
+            return ResponseEntity.ok().body(categoryService.update(categoryDtoBody, id));
         } catch (Exception e) {
             return ResponseEntity.badRequest().build();
         }

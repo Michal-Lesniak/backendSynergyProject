@@ -32,12 +32,12 @@ public class Integration {
     @NotNull
     private Integer noOfMembers;
 
-    @JsonIgnoreProperties("integration")
-    @OneToMany(mappedBy = "integration", cascade = CascadeType.ALL, orphanRemoval = true )
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true )
+    @JoinColumn(name = "integration_id")
     private List<Version> versionList = new ArrayList<>();
 
     public void addVersion(Version version) {
         versionList.add(version);
-        version.setIntegration(this);
     }
 }

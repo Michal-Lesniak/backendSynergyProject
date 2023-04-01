@@ -42,52 +42,47 @@ public class IntegrationService {
     }
 
     @Transactional
-    public Integration add(Integration integrationBody) throws Exception {
-        if(integrationRepository.existsByName(integrationBody.getName())){
+    public Integration add(IntegrationDto integrationDtoBody) throws Exception {
+        if(integrationRepository.existsByName(integrationDtoBody.name())){
             throw new Exception("Integracja Istnieje");
         }
-        else {
-            return integrationRepository.save(integrationBody);
+        else{
+            return integrationRepository.save(mapToIntegration(integrationDtoBody));
         }
     }
 
 
     @Transactional
-    public Integration update(Integration integrationBody,Long id) throws Exception{
+    public Integration update(IntegrationDto integrationDtoBody,Long id) throws Exception{
        Optional<Integration> existingIntegration = integrationRepository.findById(id);
        if(existingIntegration.isEmpty()){
            throw new Exception("W bazie nie ma takiej Integracji!");
         }
        else{
            Integration integration = existingIntegration.get();
-           List<Version> versionList =  integration.getVersionList();
-           versionList.clear();
-           integrationBody.getVersionList().forEach((version -> {versionList.add(version);}));
-           integration.setVersionList(versionList);
-           integration.setName(integrationBody.getName());
-           integration.setBudget(integrationBody.getBudget());
-           integration.setPhoto(integrationBody.getPhoto());
-           integration.setNoOfMembers(integrationBody.getNoOfMembers());
+
+           integration.setName(integrationDtoBody.name());
+           integration.setBudget(integrationDtoBody.budget());
+           integration.setPhoto(integrationDtoBody.photo());
+           integration.setNoOfMembers(integrationDtoBody.noOfMembers());
            return integrationRepository.save(integration);
        }
     }
 
 
-//    public Integration mapToIntegration(IntegrationDto integrationDto){
-//        Integration integration = new Integration();
-//        integration.setName(integrationDto.name());
-//        integration.setPhoto(integrationDto.photo());
-//        integration.setBudget(integrationDto.budget());
-//        integration.setNoOfMembers(integrationDto.noOfMembers());
-//        integration.setVersionList(integrationDto.versionList());
-//        return integration;
-//    }
-//
-//    public IntegrationDto mapToDto(Integration integration){
-//        return new IntegrationDto(integration.getName(),
-//                integration.getPhoto(),
-//                integration.getBudget(),
-//                integration.getNoOfMembers(),
-//                integration.getVersionList());
-//    }
+    public Integration mapToIntegration(IntegrationDto integrationDto){
+        Integration integration = new Integration();
+        integration.setName(integrationDto.name());
+        integration.setPhoto(integrationDto.photo());
+        integration.setBudget(integrationDto.budget());
+        integration.setNoOfMembers(integrationDto.noOfMembers());
+        return integration;
+    }
+
+    public IntegrationDto mapToDto(Integration integration){
+        return new IntegrationDto(integration.getName(),
+                integration.getPhoto(),
+                integration.getBudget(),
+                integration.getNoOfMembers());
+    }
 }

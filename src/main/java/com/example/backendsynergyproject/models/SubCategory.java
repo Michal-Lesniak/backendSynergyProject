@@ -24,8 +24,4 @@ public class SubCategory {
     @NotNull
     private Integer cost;
 
-    @JsonIgnoreProperties("subCategoryList")
-    @ManyToOne
-    @JoinColumn(name = "category_id")
-    private Category category;
 }

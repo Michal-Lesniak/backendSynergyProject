@@ -9,6 +9,5 @@ public record IntegrationDto(
         String name,
         String photo,
         Integer budget,
-        Integer noOfMembers,
-        List<Version> versionList
+        Integer noOfMembers
 ) {}
