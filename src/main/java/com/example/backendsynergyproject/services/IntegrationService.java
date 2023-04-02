@@ -63,7 +63,6 @@ public class IntegrationService {
 
            integration.setName(integrationDtoBody.name());
            integration.setBudget(integrationDtoBody.budget());
-           integration.setPhoto(integrationDtoBody.photo());
            integration.setNoOfMembers(integrationDtoBody.noOfMembers());
            return integrationRepository.save(integration);
        }
@@ -73,7 +72,6 @@ public class IntegrationService {
     public Integration mapToIntegration(IntegrationDto integrationDto){
         Integration integration = new Integration();
         integration.setName(integrationDto.name());
-        integration.setPhoto(integrationDto.photo());
         integration.setBudget(integrationDto.budget());
         integration.setNoOfMembers(integrationDto.noOfMembers());
         return integration;
@@ -81,7 +79,6 @@ public class IntegrationService {
 
     public IntegrationDto mapToDto(Integration integration){
         return new IntegrationDto(integration.getName(),
-                integration.getPhoto(),
                 integration.getBudget(),
                 integration.getNoOfMembers());
     }

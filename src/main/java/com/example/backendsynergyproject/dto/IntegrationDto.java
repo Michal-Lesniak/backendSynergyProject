@@ -7,7 +7,6 @@ import java.util.List;
 
 public record IntegrationDto(
         String name,
-        String photo,
         Integer budget,
         Integer noOfMembers
 ) {}

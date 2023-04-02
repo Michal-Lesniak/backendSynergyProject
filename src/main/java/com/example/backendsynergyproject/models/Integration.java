@@ -26,12 +26,10 @@ public class Integration {
     @NotNull
     private String name;
 
-    private String photo;
     @NotNull
     private Integer budget;
     @NotNull
     private Integer noOfMembers;
-
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true )
     @JoinColumn(name = "integration_id")
