@@ -23,4 +23,13 @@ public class ImageController {
                 .body(imageData);
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Boolean> deleteImage(@PathVariable Long id){
+        if(imageDataService.deleteImage(id)){
+            return ResponseEntity.ok().body(true);
+        }else{
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
 }

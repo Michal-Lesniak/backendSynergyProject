@@ -40,5 +40,13 @@ public class ImageDataService {
         return images;
     }
 
+    public Boolean deleteImage(Long id){
+        if(imageDataRepository.existsById(id)) {
+            imageDataRepository.deleteById(id);
+            return true;
+        }else{
+            return false;
+        }
+    }
 
 }
