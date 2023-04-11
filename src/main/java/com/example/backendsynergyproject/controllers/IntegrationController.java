@@ -63,17 +63,18 @@ public class IntegrationController {
     }
 
     @PostMapping("/{id}/version")
-    public ResponseEntity<Integration> addVersion(@PathVariable Long id, @RequestBody VersionDto versionDto) {
+    public ResponseEntity<Version> addVersion(@PathVariable Long id, @RequestBody VersionDto versionDto) {
         try {
-            Integration updatedIntegration =  versionService.add(versionDto, id);
-            return ResponseEntity.ok().body(updatedIntegration);
+            List<Version> versionList =  versionService.add(versionDto, id).getVersionList();
+            Version addedVersion = versionList.get(versionList.size() - 1);
+            return ResponseEntity.ok().body(addedVersion);
         }catch (Exception e){
             return ResponseEntity.badRequest().build();
         }
     }
 
     @PostMapping("/{id}/image")
-    public ResponseEntity<?> addImage(@PathVariable Long id, @RequestParam("image")MultipartFile file) {
+    public ResponseEntity<?> addImage(@PathVariable Long id, @RequestParam("image") MultipartFile file) {
         try {
             ImageData imageData =  imageDataService.uploadImage(file, id);
             return ResponseEntity.ok().body(imageData);

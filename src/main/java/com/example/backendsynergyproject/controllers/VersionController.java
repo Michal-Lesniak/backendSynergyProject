@@ -49,9 +49,11 @@ public class VersionController {
     }
 
     @PostMapping("/{id}/category")
-    public ResponseEntity<Version> addCategory(@PathVariable Long id, @RequestBody CategoryDto categoryDtoBody) {
+    public ResponseEntity<Category> addCategory(@PathVariable Long id, @RequestBody CategoryDto categoryDtoBody) {
         try {
-            return ResponseEntity.ok().body(categoryService.add(categoryDtoBody, id));
+            List<Category> categoryList = categoryService.add(categoryDtoBody, id).getCategoryList();
+            Category addedCategory = categoryList.get(categoryList.size() - 1);
+            return ResponseEntity.ok().body(addedCategory);
         } catch (Exception e) {
             return ResponseEntity.badRequest().build();
         }
