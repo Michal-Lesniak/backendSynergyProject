@@ -48,9 +48,11 @@ public class CategoryController {
     }
 
     @PostMapping("/{id}/subcategory")
-    public ResponseEntity<Category> addSubCategory(@PathVariable Long id, @RequestBody SubCategoryDto subCategoryDtoBody){
+    public ResponseEntity<SubCategory> addSubCategory(@PathVariable Long id, @RequestBody SubCategoryDto subCategoryDtoBody){
         try {
-            return ResponseEntity.ok().body(subCategoryService.add(subCategoryDtoBody, id));
+            List<SubCategory> subCategoryList = subCategoryService.add(subCategoryDtoBody, id).getSubCategoryList();
+            SubCategory addedSubCategory = subCategoryList.get(subCategoryList.size() - 1);
+            return ResponseEntity.ok().body(addedSubCategory);
         }catch (Exception e){
             return ResponseEntity.badRequest().build();
         }

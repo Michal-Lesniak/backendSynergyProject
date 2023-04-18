@@ -16,18 +16,25 @@ public class ImageController {
     ImageDataService imageDataService;
 
     @GetMapping( "/{id}")
-    public ResponseEntity<?> downloadImage(@PathVariable Long id){
-        byte[] imageData=imageDataService.downloadImage(id);
-        return ResponseEntity.status(HttpStatus.OK)
-                .contentType(MediaType.valueOf("image/png"))
-                .body(imageData);
+    public ResponseEntity<byte[]> downloadImage(@PathVariable Long id){
+        try {
+            byte[] imageData=imageDataService.downloadImage(id);
+            return ResponseEntity.status(HttpStatus.OK)
+                    .contentType(MediaType.valueOf("image/png"))
+                    .body(imageData);
+        }catch (Exception e){
+            return ResponseEntity.badRequest().build();
+        }
     }
 
+
+
+
     @DeleteMapping("/{id}")
-    public ResponseEntity<Boolean> deleteImage(@PathVariable Long id){
-        if(imageDataService.deleteImage(id)){
+    public ResponseEntity<Boolean> deleteImage(@PathVariable Long id) {
+        if (imageDataService.deleteImage(id)) {
             return ResponseEntity.ok().body(true);
-        }else{
+        } else {
             return ResponseEntity.badRequest().build();
         }
     }

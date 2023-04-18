@@ -34,9 +34,9 @@ public class ImageDataService {
         }
     }
 
-    public byte[] downloadImage(Long id){
+    public byte[] downloadImage(Long id) throws Exception{
         Optional<ImageData> dbImageData = imageDataRepository.findById(id);
-        byte[] images=ImageDataUtils.decompressImage(dbImageData.get().getImageData());
+        byte[] images=ImageDataUtils.decompressImage(dbImageData.orElseThrow(()-> new Exception("Not Found")).getImageData());
         return images;
     }
 
