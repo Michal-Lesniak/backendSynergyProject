@@ -28,7 +28,7 @@ public class Category {
     private Integer fullCost;
 
     @NotNull
-    private Integer spendPercentOfBudgetCategory;
+    private Float spendPercentOfBudgetCategory;
 
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)

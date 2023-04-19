@@ -24,7 +24,7 @@ public class Version {
     private Long id;
 
     @NotNull
-    private Integer percentOfSpendBudget;
+    private Float percentOfSpendBudget;
 
     @NotNull
     private String name;
