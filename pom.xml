@@ -53,6 +53,7 @@
 
 
     <build>
+        <finalName>synergy-api-docker</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
