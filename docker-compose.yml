@@ -2,7 +2,7 @@ version: '2.15.1'
 services:
   api:
     container_name: synergy_api
-    image: 'synergy-api-docker.jar'
+    image: 'michalles1/synergy-api:firstpush'
     build: .
     ports:
       - "8080:8080"
@@ -16,7 +16,7 @@ services:
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
 
   db:
-    image: postgres
+    image: 'michalles1/synergy-database:firstpush'
     ports:
       - "5432:5432"
     environment:
