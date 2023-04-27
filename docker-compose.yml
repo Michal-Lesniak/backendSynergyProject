@@ -4,6 +4,7 @@ services:
     container_name: synergy_api
     image: 'michalles1/synergy-api:firstpush'
     build: .
+    restart: on-failure
     ports:
       - "8080:8080"
     depends_on:
@@ -29,4 +30,4 @@ services:
       timeout: 5s
       retries: 5
     volumes:
-      - ./data.sql
+      - ./data.sql:/docker-entrypoint-initdb.d/data.sql
